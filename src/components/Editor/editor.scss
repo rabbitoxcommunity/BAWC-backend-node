@@ -1,0 +1,67 @@
+.ProseMirror h1{
+    font-size: 20px;
+}
+.ProseMirror h2 {
+    font-size: 16px;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+    list-style: disc;
+    /* Ensure lists are visible */
+    padding-right: 20px;
+}
+
+.rich__editor {
+    padding: 20px;
+    border: 1px solid #e3e3e3;
+    border-radius: 15px;
+
+    .editor__tools {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+        
+
+        .editBtn {
+            background-color: #e3e3e3;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-size: 12px;
+            min-height: 35px;
+
+            &.active {
+                background-color: var(--primary-color);
+                color: #fff;
+            }
+
+            svg {
+                width: 16px;
+            }
+        }
+    }
+
+    .tiptap {
+        padding: 20px;
+        border: 1px solid #e3e3e3;
+        border-radius: 15px;
+        font-size: 14px;
+        min-height: 150px;
+        .is-editor-empty::before {
+            content: attr(data-placeholder);
+            color: #aaa;
+            height: 0;
+            pointer-events: none;
+          }
+        &.ProseMirror-focused {
+            border: 1px solid #a4a2a2;
+            box-shadow: none;
+            outline: none;
+        }
+    }
+}

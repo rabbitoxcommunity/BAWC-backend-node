@@ -1,0 +1,19 @@
+span#Breadcrumb {
+    display: inline-flex;
+    color: #949494;
+
+    p {
+        cursor: pointer;
+        margin: 0;
+
+        &::after {
+            content: '/';
+            margin: 0 10px;
+        }
+
+        &:last-of-type::after {
+            content: '';
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,43 @@
+#Page {
+    height: 100%;
+    padding: 1px;
+    display: flex;
+    flex-direction: column;
+
+    footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #c3c3c3;
+        border-top: 1px solid #e3e3e3;
+        padding: 10px 0;
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+#Page_Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &>div {
+        display: flex;
+
+        &.title {
+            flex-direction: column;
+        }
+
+        &.buttons {
+            flex-direction: row;
+            gap: 10px;
+        }
+    }
+}
+
+// #Page_Body {
+//     margin-top: 30px;
+// }
