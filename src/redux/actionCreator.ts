@@ -63,7 +63,7 @@ export const createCategory = (data, callback) => (dispatch) => {
     .post(`${API_BASE_URL}categories`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data?.data);
         dispatch(updateRedux({ key: "newsLists", value: res?.data?.data?.result }));
         console.log(res, 'aslam')
         successToast(res?.data?.message)
@@ -90,7 +90,7 @@ export const updateCategory = (data, callback) => (dispatch) => {
     .put(`${API_BASE_URL}categories`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data?.data);
         console.log(res, 'aslam')
         successToast(res?.data?.message)
       } else {
@@ -195,7 +195,7 @@ export const createBrand = (data, callback) => (dispatch) => {
     .post(`${API_BASE_URL}brands`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data?.data);
         successToast(res?.data?.message)
       } else {
         toast.error("Something went wrong.", {
@@ -297,7 +297,7 @@ export const updateBrand = (data, callback) => (dispatch) => {
     .put(`${API_BASE_URL}brands`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data);
         successToast(res?.data?.message)
       } else {
         toast.error("Something went wrong.", {
@@ -327,7 +327,7 @@ export const createBanner = (data, callback) => (dispatch) => {
     .post(`${API_BASE_URL}banners`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data?.data);
         successToast(res?.data?.message)
       } else {
         toast.error("Something went wrong.", {
@@ -427,7 +427,7 @@ export const updateBanner = (data, callback) => (dispatch) => {
     .put(`${API_BASE_URL}banners`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data?.data);
         successToast(res?.data?.message)
       } else {
         toast.error("Something went wrong.", {
@@ -455,7 +455,7 @@ export const createProduct = (data, callback) => (dispatch) => {
     .post(`${API_BASE_URL}products`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data?.data);
         successToast(res?.data?.message)
       } else {
         toast.error("Something went wrong.", {
@@ -556,7 +556,7 @@ export const updateProduct = (data, callback) => (dispatch) => {
     .put(`${API_BASE_URL}products`, data)
     .then((res) => {
       if (res) {
-        callback && callback(res?.data?.data?.result);
+        callback && callback(res?.data?.data);
         successToast(res?.data?.message)
       } else {
         toast.error("Something went wrong.", {

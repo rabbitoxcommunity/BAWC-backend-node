@@ -8,7 +8,7 @@ import { createProduct, getBrands, getCategories, getProductById, updateProduct 
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_IMAGE_BASE_URL } from '../../config/configuration';
 import Select from "react-select";
-import { Form } from 'react-bootstrap';
+import { Form, Spinner } from 'react-bootstrap';
 import { EditButtons } from '../../components/Editor/EditButtons';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -22,6 +22,7 @@ export default function AddProduct() {
     const [brands, setBrands] = useState([]);
     const [oldImages, setOldImages] = useState([]);
     const [newFiles, setNewFiles] = useState([]);
+    const [loader, setLoader] = useState(false)
 
     const { id } = useParams()
     const { register, handleSubmit, reset, watch, control, formState: { errors } } = useForm({
@@ -152,12 +153,14 @@ export default function AddProduct() {
     };
 
     const onSubmit = (data) => {
+        console.log(data,'data')
+        setLoader(true)
         const formData = new FormData();
         formData.append('title', data.title);
         formData.append('category', data?.category?.value);
         formData.append('brand', data?.brand?.value);
         formData.append('actualPrice', data?.actualPrice);
-        formData.append('discountPrice', data?.discountPrice);
+        formData.append('discountPrice', data?.discountPrice ? data?.discountPrice : 0);
         formData.append('isFeatured', data?.isFeatured);
         formData.append('isOutOfStock', data?.isOutOfStock);
 
@@ -181,10 +184,19 @@ export default function AddProduct() {
 
         if (id) {
             formData.append('id', id);
-            dispatch(updateProduct(formData));
-            navigate('/manage-products');
+            dispatch(updateProduct(formData, (res) => {
+                if (res) {
+                     setLoader(false)
+                    navigate('/manage-products');
+                }
+            }));
+
         } else {
-            dispatch(createProduct(formData));
+            dispatch(createProduct(formData,(res)=>{
+                  if (res) {
+                     setLoader(false)
+                }
+            }));
         }
 
         reset({
@@ -359,7 +371,7 @@ export default function AddProduct() {
                                     {/* old images */}
                                     {oldImages?.map((img, index) => (
                                         <div key={`detail-${index}`} className="relative">
-                                            <img src={API_IMAGE_BASE_URL + img} alt={`detail-${index}`} className="rounded w-20 h-20 object-contain p-2 bg-gray-100" />
+                                            <img src={img} alt={`detail-${index}`} className="rounded w-20 h-20 object-contain p-2 bg-gray-100" />
                                             <button type="button" onClick={() => handleRemove(index)}
                                                 className="absolute top-1 right-1 bg-red-500 text-white text-xs flex items-center justify-center w-[20px] h-[20px] rounded-full">
                                                 ✕
@@ -395,7 +407,8 @@ export default function AddProduct() {
                         </div>
                     </div>
                     <div className="flex gap-2 mt-3">
-                        <button type='submit' className='btn-primary'>{id ? "Update" : "Submit"}</button>
+                        {/* <button type='submit' className='btn-primary'>{id ? "Update" : "Submit"}</button> */}
+                        <button type='submit' className='btn-primary flex items-center gap-2'>{id ? "Update" : "Submit"} {loader && <Spinner size='sm' />}</button>
                         <button onClick={() => navigate('/manage-category')} className='btn-secondary'>Cancel</button>
                     </div>
                 </form>

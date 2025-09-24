@@ -41,7 +41,7 @@ export default function ManageBanners() {
       name: 'Banner Image',
       width: "20%",
       cell: (row, index, column, id) => (
-        <img className='table_img' src={API_IMAGE_BASE_URL + row?.image} />
+        <img className='table_img' src={row?.image} />
       ),
       ignoreRowClick: true,
       allowOverflow: true,
@@ -95,7 +95,7 @@ export default function ManageBanners() {
     if (searchTerm === '') {
       setData(originalData);
     } else {
-      const filteredData = originalData.filter(
+      const filteredData = originalData?.filter(
         (row) =>
           (row.mainTitle && row.mainTitle.toLowerCase().includes(searchTerm)) ||
           (row.subTitle && row.subTitle.toString().includes(searchTerm)) ||

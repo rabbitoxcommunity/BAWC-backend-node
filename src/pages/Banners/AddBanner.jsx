@@ -7,10 +7,12 @@ import { useDispatch } from 'react-redux';
 import { createBanner, getBannerById, updateBanner } from '../../redux/actionCreator';
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_IMAGE_BASE_URL } from '../../config/configuration';
+import { Spinner } from 'react-bootstrap';
 
 export default function AddBanner() {
     const [detail, setDetail] = useState({})
     const [preview, setPreview] = useState(null);
+    const [loader, setLoader] = useState(false)
 
     const { id } = useParams()
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
@@ -54,6 +56,7 @@ export default function AddBanner() {
 
 
     const onSubmit = (data) => {
+        setLoader(true)
         const formData = new FormData();
         formData.append('subTitle', data.subTitle);
         formData.append('mainTitle', data.mainTitle);
@@ -61,10 +64,19 @@ export default function AddBanner() {
         formData.append('image', data.image[0]);
         if (id) {
             formData.append('id', id);
-            dispatch(updateBanner(formData))
-            navigate('/manage-banners')
+            dispatch(updateBanner(formData, (res) => {
+                if (res) {
+                    setLoader(false)
+                    navigate('/manage-banners')
+                }
+            }))
+
         } else {
-            dispatch(createBanner(formData))
+            dispatch(createBanner(formData, (res) => {
+                if (res) {
+                    setLoader(false)
+                }
+            }))
         }
         reset();
     }
@@ -93,11 +105,11 @@ export default function AddBanner() {
                             <label htmlFor="">Sub Title</label>
                             <input type="text" className="form-control w-100" {...register("subTitle")} placeholder='Type here' />
                         </div>
-                         <div className="form-group col-span-2">
+                        <div className="form-group col-span-2">
                             <label htmlFor="">Main Title</label>
                             <input type="text" className="form-control w-100" {...register("mainTitle")} placeholder='Type here' />
                         </div>
-                         <div className="form-group col-span-2">
+                        <div className="form-group col-span-2">
                             <label htmlFor="">Link</label>
                             <input type="text" className="form-control w-100" {...register("link")} placeholder='Type here' />
                         </div>
@@ -107,7 +119,7 @@ export default function AddBanner() {
                             {errors?.image && <span style={{ color: "red", fontSize: "12px" }}>This is required</span>}
                             {(preview || detail?.image) && (
                                 <img
-                                    src={preview || (API_IMAGE_BASE_URL + detail.image)}
+                                    src={preview || (detail.image)}
                                     alt="Brand"
                                     className="mt-2 rounded w-15 h-15 object-contain p-2 bg-gray-100"
                                 />
@@ -122,7 +134,8 @@ export default function AddBanner() {
                     </div> */}
                     </div>
                     <div className="flex gap-2 mt-3">
-                        <button type='submit' className='btn-primary'>{id ? "Update" : "Submit"}</button>
+                        {/* <button type='submit' className='btn-primary'>{id ? "Update" : "Submit"}</button> */}
+                        <button type='submit' className='btn-primary flex items-center gap-2'>{id ? "Update" : "Submit"} {loader && <Spinner size='sm' /> }</button>
                         <button onClick={() => navigate('/manage-brand')} className='btn-secondary'>Cancel</button>
                     </div>
                 </form>

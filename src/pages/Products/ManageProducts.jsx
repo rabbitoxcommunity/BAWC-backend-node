@@ -109,7 +109,7 @@ export default function ManageProducts() {
       name: 'Images',
       width: "150px",
       cell: (row, index, column, id) => (
-        <img className='table_img' src={API_IMAGE_BASE_URL + row?.images?.[0]} />
+        <img className='table_img' src={row?.images?.[0]} />
       ),
       ignoreRowClick: true,
       allowOverflow: true,

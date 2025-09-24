@@ -7,10 +7,12 @@ import { useDispatch } from 'react-redux';
 import { createBrand, getBrandById, updateBrand } from '../../redux/actionCreator';
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_IMAGE_BASE_URL } from '../../config/configuration';
+import { Spinner } from 'react-bootstrap';
 
 export default function AddBrand() {
     const [detail, setDetail] = useState({})
     const [preview, setPreview] = useState(null);
+    const [loader, setLoader] = useState(false)
 
     const { id } = useParams()
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
@@ -52,15 +54,26 @@ export default function AddBrand() {
 
 
     const onSubmit = (data) => {
+        setLoader(true)
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('image', data.image[0]);
         if (id) {
             formData.append('id', id);
-            dispatch(updateBrand(formData))
-            navigate('/manage-brands')
+            dispatch(updateBrand(formData, (res) => {
+                if (res?.success) {
+                    setLoader(false)
+                    navigate('/manage-brands')
+                }
+
+            }))
+
         } else {
-            dispatch(createBrand(formData))
+            dispatch(createBrand(formData, (res) => {
+                if (res) {
+                    setLoader(false)
+                }
+            }))
         }
         reset();
     }
@@ -96,7 +109,7 @@ export default function AddBrand() {
                             {errors?.image && <span style={{ color: "red", fontSize: "12px" }}>This is required</span>}
                             {(preview || detail?.image) && (
                                 <img
-                                    src={preview || (API_IMAGE_BASE_URL + detail.image)}
+                                    src={preview || (detail.image)}
                                     alt="Brand"
                                     className="mt-2 rounded w-15 h-15 object-contain p-2 bg-gray-100"
                                 />
@@ -111,7 +124,7 @@ export default function AddBrand() {
                     </div> */}
                     </div>
                     <div className="flex gap-2 mt-3">
-                        <button type='submit' className='btn-primary'>{id ? "Update" : "Submit"}</button>
+                        <button type='submit' className='btn-primary flex items-center gap-2'>{id ? "Update" : "Submit"} {loader && <Spinner size='sm' /> }</button>
                         <button onClick={() => navigate('/manage-brand')} className='btn-secondary'>Cancel</button>
                     </div>
                 </form>

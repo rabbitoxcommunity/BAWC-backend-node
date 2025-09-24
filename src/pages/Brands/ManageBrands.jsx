@@ -39,7 +39,7 @@ export default function ManageBrands() {
       name: 'Brand Logo',
       width: "40%",
       cell: (row, index, column, id) => (
-        <img className='table_img' src={API_IMAGE_BASE_URL + row?.image} />
+        <img className='table_img' src={row?.image} />
       ),
       ignoreRowClick: true,
       allowOverflow: true,

@@ -1,22 +1,25 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/actionCreator';
 import { useNavigate } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 
 export default function Login() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
+    const [loading, setLoading] = useState(false)
+
     const onSubmit = (data) => {
+        setLoading(true)
         let obj = {
             username: data?.username,
             password: data?.password,
         }
-
         dispatch(login(obj, (res) => {
-            console.log(res, 'login1232')
+            setLoading(false)
             if (res?.status === 200) {
                 navigate('/')
             }
@@ -46,7 +49,7 @@ export default function Login() {
                     </div>
                 </div>
                 <div className="flex gap-4 mt-5 justify-center">
-                    <button type='submit' className='btn-primary'>Submit</button>
+                    <button type='submit' className='btn-primary flex items-center gap-2'>Submit {loading && <Spinner size='sm' /> } </button>
                     <button type='submit' className='btn-secondary'>Cancel</button>
                 </div>
             </form>
